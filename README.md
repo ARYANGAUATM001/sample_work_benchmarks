@@ -1,15 +1,17 @@
-# Cascaded Tanks Benchmark – GRU-Based System Identification
+# Cascaded Tanks Benchmark – System Identification
 
-This project presents a small work sample for nonlinear system identification using the **Cascaded Tanks benchmark**.
+This project presents a work sample for **nonlinear system identification** using the **Cascaded Tanks benchmark dataset**.
+
+---
 
 ## 📌 Objective
 
 The goal is to model the system dynamics and compare:
 
-* A **GRU-based sequence model**
-* A **Deep GRU model (stacked layers)**
+- A **linear baseline model (ARX)**
+- A **nonlinear model (NARX Neural Network)**
 
-Both models are trained on the provided dataset and evaluated in **simulation mode**, following the benchmark guidelines.
+Both models are trained on the provided dataset and evaluated in **simulation mode**, following the official benchmark guidelines.
 
 ---
 
@@ -17,40 +19,40 @@ Both models are trained on the provided dataset and evaluated in **simulation mo
 
 ### 1. Data
 
-* Dataset: Cascaded Tanks benchmark
-* Train/test split provided by the benchmark
-* Evaluation uses only the allowed initialization window
+- Dataset: Cascaded Tanks benchmark  
+- Predefined train/test split  
+- Evaluation uses only the **initialization window (`y[:n]`)**, with the rest predicted autoregressively  
 
 ### 2. Models
 
-#### 🔹 GRU (Gated Recurrent Unit)
+#### 🔹 ARX (Linear Model)
 
-* Sequence-based model using past inputs and outputs
-* Captures temporal dependencies in the system
-* Serves as the baseline sequence model
+- Uses past inputs and outputs  
+- Implemented using linear regression  
+- Serves as a simple and stable baseline  
 
-#### 🔹 Deep GRU
+#### 🔹 NARX Neural Network
 
-* Stacked GRU layers for higher model capacity
-* Better suited for complex nonlinear dynamics
-* Expected to improve performance over standard GRU
+- Uses lagged inputs and outputs  
+- Implemented using a multi-layer perceptron (MLP)  
+- Designed to capture nonlinear system behavior  
 
 ---
 
 ## 📊 Results
 
-| Model    | RMSE  |
-|----------|------|
-| GRU      | ~3.19 |
-| Deep GRU | ~2.12 |
+| Model               | RMSE  |
+|--------------------|------|
+| ARX (Linear)       | ~4.55 |
+| NARX Neural Network| ~5.08 |
 
-> The Deep GRU model performs better due to increased representational capacity and ability to capture more complex temporal patterns.
+> The nonlinear model required stabilization during simulation and showed slightly lower performance compared to the linear baseline.
 
 ---
 
 ## 📈 Model Comparison
 
-The following plot shows the true system output along with predictions from both models:
+The plot below compares the true system output with predictions from both models:
 
 ![Model Comparison](results/model_comparison.png)
 
@@ -58,30 +60,16 @@ The following plot shows the true system output along with predictions from both
 
 ## 🧠 Observations
 
-* GRU models are effective for modeling time-series dynamics in nonlinear systems.
-* The Deep GRU provides improved performance compared to the single-layer GRU.
-* Autoregressive simulation introduces accumulated error, making training stability important.
+- The **ARX model** provides stable and consistent predictions.  
+- The **NARX model** captures some nonlinear patterns but is sensitive during simulation.  
+- Autoregressive prediction introduces **error accumulation**, making nonlinear models harder to stabilize.  
 
 ---
 
-## 🚀 How to Run
-
-1. Install dependencies:
-
-   ```bash
-   pip install -r requirements.txt
-
-2. Run the main script:,
-   python main.py
-
-3. Output
-   RMSE values printed in console
-   Plot saved in results/ folder
-
-
+Summary :
 
 This project demonstrates:
 
-Implementation of sequence-based models for system identification
-Proper evaluation using simulation-based prediction
-Comparison using both quantitative (RMSE) and qualitative (plots) analysis
+Implementation of linear and nonlinear system identification models
+Proper simulation-based evaluation following benchmark rules
+Clear comparison using both quantitative (RMSE) and qualitative (plots) analysis
